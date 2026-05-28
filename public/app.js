@@ -105,7 +105,7 @@ function syncRenderInterval() {
   const hasDeadlines = tasksCache.some((task) => Boolean(task.deadlineAt));
 
   if (hasDeadlines && !renderInterval) {
-    renderInterval = setInterval(() => renderTasks(tasksCache), 60_000);
+    renderInterval = setInterval(() => renderTasks(tasksCache), 1_000);
   }
 
   if (!hasDeadlines && renderInterval) {
