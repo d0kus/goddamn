@@ -1,0 +1,25 @@
+{
+  "name": "goddamn",
+  "version": "1.0.0",
+  "description": "Minimal working Telegram Mini App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d0kus/goddamn.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/d0kus/goddamn/issues"
+  },
+  "homepage": "https://github.com/d0kus/goddamn#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
