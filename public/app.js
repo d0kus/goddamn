@@ -45,10 +45,12 @@ function renderTasks(tasks) {
     if (task.done) title.classList.add("done");
     info.append(title);
 
-    const deadline = document.createElement("small");
-    deadline.className = "task-deadline";
-    deadline.textContent = formatDeadline(task.deadlineAt);
-    info.append(deadline);
+    if (task.deadlineAt) {
+      const deadline = document.createElement("small");
+      deadline.className = "task-deadline";
+      deadline.textContent = formatDeadline(task.deadlineAt);
+      info.append(deadline);
+    }
 
     const actions = document.createElement("div");
     actions.className = "task-actions";
@@ -78,10 +80,6 @@ function renderTasks(tasks) {
 }
 
 function formatDeadline(deadlineAt) {
-  if (!deadlineAt) {
-    return "Без дедлайна";
-  }
-
   const deadlineDate = new Date(deadlineAt);
   if (Number.isNaN(deadlineDate.getTime())) {
     return "Некорректный дедлайн";
