@@ -7,6 +7,7 @@ const deadlineEl = document.getElementById("task-deadline");
 
 const tg = window.Telegram?.WebApp;
 let tasksCache = [];
+let renderInterval = null;
 
 function initTelegram() {
   if (!tg) {
@@ -29,6 +30,7 @@ async function loadTasks() {
   const response = await fetch("/api/tasks");
   tasksCache = await response.json();
   renderTasks(tasksCache);
+  syncRenderInterval();
 }
 
 function renderTasks(tasks) {
@@ -101,6 +103,19 @@ function formatDeadline(deadlineAt) {
   return diff >= 0 ? `Осталось: ${timeLeftText}` : `Просрочено: ${timeLeftText}`;
 }
 
+function syncRenderInterval() {
+  const hasDeadlines = tasksCache.some((task) => Boolean(task.deadlineAt));
+
+  if (hasDeadlines && !renderInterval) {
+    renderInterval = setInterval(() => renderTasks(tasksCache), 60_000);
+  }
+
+  if (!hasDeadlines && renderInterval) {
+    clearInterval(renderInterval);
+    renderInterval = null;
+  }
+}
+
 formEl.addEventListener("submit", async (event) => {
   event.preventDefault();
   const title = inputEl.value.trim();
@@ -135,7 +150,3 @@ formEl.addEventListener("submit", async (event) => {
 
 initTelegram();
 void loadTasks();
-const renderInterval = setInterval(() => renderTasks(tasksCache), 60_000);
-window.addEventListener("beforeunload", () => {
-  clearInterval(renderInterval);
-});
