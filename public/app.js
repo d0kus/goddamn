@@ -135,4 +135,7 @@ formEl.addEventListener("submit", async (event) => {
 
 initTelegram();
 void loadTasks();
-setInterval(() => renderTasks(tasksCache), 60_000);
+const renderInterval = setInterval(() => renderTasks(tasksCache), 60_000);
+window.addEventListener("beforeunload", () => {
+  clearInterval(renderInterval);
+});
