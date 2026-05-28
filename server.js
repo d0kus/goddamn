@@ -21,15 +21,27 @@ function createApp() {
 
   app.post("/api/tasks", (req, res) => {
     const title = String(req.body?.title || "").trim();
+    const rawDeadlineAt = req.body?.deadlineAt;
 
     if (!title) {
       return res.status(400).json({ error: "title is required" });
+    }
+
+    let deadlineAt = null;
+    if (rawDeadlineAt !== undefined && rawDeadlineAt !== null && String(rawDeadlineAt).trim() !== "") {
+      const parsedDeadline = new Date(rawDeadlineAt);
+      if (Number.isNaN(parsedDeadline.getTime())) {
+        return res.status(400).json({ error: "deadlineAt must be a valid date" });
+      }
+
+      deadlineAt = parsedDeadline.toISOString();
     }
 
     const task = {
       id: taskId++,
       title,
       done: false,
+      deadlineAt,
       createdAt: new Date().toISOString(),
     };
 
@@ -47,6 +59,18 @@ function createApp() {
 
     task.done = !task.done;
     return res.json(task);
+  });
+
+  app.delete("/api/tasks/:id", (req, res) => {
+    const id = Number.parseInt(req.params.id, 10);
+    const taskIndex = tasks.findIndex((item) => item.id === id);
+
+    if (taskIndex === -1) {
+      return res.status(404).json({ error: "task not found" });
+    }
+
+    tasks.splice(taskIndex, 1);
+    return res.status(204).end();
   });
 
   app.get(/.*/, (_req, res) => {

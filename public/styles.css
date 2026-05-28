@@ -35,6 +35,7 @@ h2 {
 
 #task-form {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
@@ -65,14 +66,34 @@ ul {
 
 li {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   padding: 8px 0;
   border-bottom: 1px solid #2d364a;
+  gap: 8px;
 }
 
 li button {
   padding: 6px 10px;
+}
+
+.task-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.task-deadline {
+  opacity: 0.75;
+}
+
+.task-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.danger {
+  background: #da4f60;
 }
 
 .done {
